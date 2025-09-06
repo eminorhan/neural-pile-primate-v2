@@ -6,7 +6,7 @@ python create_dataset.py --hf_repo_name "eminorhan/card" --token_count_limit 10_
 ```
 where `hf_repo_name` is the HF datasets repository name where the processed data will be pushed to, `token_count_limit` is the maximum token count per dataset row (sessions with larger token counts than this will be split into smaller chunks).
 
-**Token count:** ??
+**Token count:** 2,484,658,688
 
 **HF repo:** https://huggingface.co/datasets/eminorhan/card
 

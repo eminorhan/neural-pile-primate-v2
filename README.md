@@ -3,7 +3,7 @@
 
 # Spiking neural activity data recorded from primates 
 
-~34B uncompressed tokens of spiking neural activity data recorded from primates (tokens=neurons x time bins). Unless otherwise noted, the data consist of spike counts in 20 ms time bins recorded from each neuron. 
+~37B uncompressed tokens of spiking neural activity data recorded from primates (tokens=neurons x time bins). Unless otherwise noted, the data consist of spike counts in 20 ms time bins recorded from each neuron. 
 
 This repository contains the code and instructions for building the dataset from scratch. The actual final dataset is hosted at [this](https://huggingface.co/datasets/eminorhan/neural-pile-primate) public HF repository.
 
@@ -13,6 +13,7 @@ The current component datasets and token counts per dataset are as follows:
 |:-------------------|----------------:|:------------------------------------------------------------|:-------------------------------|:---------|---------:|---------:|
 | Xiao               | 17,695,820,059  | [dandi:000628](https://dandiarchive.org/dandiset/000628)    | [link](data/xiao)              | macaque  | 13       | 679      |
 | Neupane (PPC)      | 7,899,849,087   | [dandi:001275](https://dandiarchive.org/dandiset/001275)    | [link](data/neupane-ppc)       | macaque  | 2        | 10       |
+| Card               | 2,484,658,688   | [dryad:dncjsxm85]( https://doi.org/10.5061/dryad.dncjsxm85) | [link](data/card)              | human    | 1        | 45       |
 | Willett            | 1,796,119,552   | [dryad:x69p8czpq]( https://doi.org/10.5061/dryad.x69p8czpq) | [link](data/willett)           | human    | 1        | 44       |
 | Churchland         | 1,278,669,504   | [dandi:000070](https://dandiarchive.org/dandiset/000070)    | [link](data/churchland)        | macaque  | 2        | 10       |
 | Neupane (EC)       | 911,393,376     | [dandi:000897](https://dandiarchive.org/dandiset/000897)    | [link](data/neupane-entorhinal)| macaque  | 2        | 15       |
@@ -35,7 +36,7 @@ The current component datasets and token counts per dataset are as follows:
 | M2                 | 12,708,384      | [dandi:000953](https://dandiarchive.org/dandiset/000953)    | [link](data/m2)                | macaque  | 1        | 20       |
 | Area2-bump         | 7,394,070       | [dandi:000127](https://dandiarchive.org/dandiset/000127)    | [link](data/area2-bump)        | macaque  | 1        | 2        |
 
-**Total number of tokens:** 34,320,949,010
+**Total number of tokens:** 36,805,607,698
 
 The combined dataset takes up about 6 GB when stored as `.parquet` files and roughly 34 GB when stored as memory-mapped `.arrow` files (see [this](https://stackoverflow.com/a/56481636) for an explanation of the differences between these file formats). The HF `datasets` library uses `.arrow` files for local caching, so you will need at least this much free disk space in order to be able to utilize it. 
 

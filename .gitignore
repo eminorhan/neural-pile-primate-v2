@@ -11,6 +11,7 @@
 *.npz
 *.csv
 *.zip
+*.hdf5
 
 # Directories
 **/__pycache__
