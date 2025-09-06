@@ -6,7 +6,6 @@ import numpy as np
 from datasets import Dataset
 import matplotlib.pylab as plt
 
-
 def revert_zscore_to_uint8(normalized_array: np.ndarray) -> np.ndarray:
     """
     Converts a float32 array of z-scored spike counts back to a uint8 array.
