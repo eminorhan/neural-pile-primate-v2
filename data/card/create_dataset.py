@@ -23,7 +23,7 @@ def revert_zscore_to_uint8(normalized_array: np.ndarray) -> np.ndarray:
        corresponds to a step of 1 in the original integer domain.
     3. Rescaling the normalized data by this step size to get centered integers.
     4. Shifting the centered integers so that the minimum value becomes 0.
-    5. Clipping the result to the valid uint8 range [0, 255] and casting the type.
+    5. Clipping the result to the range [0, 20] and casting the type.
 
     Args:
         normalized_array: A 2D numpy array of shape (n_channels, n_timesteps) with dtype float32, representing the z-scored data.
@@ -76,8 +76,8 @@ def revert_zscore_to_uint8(normalized_array: np.ndarray) -> np.ndarray:
         min_val = np.min(centered_integers)
         reconstructed_channel = centered_integers - min_val
         
-        # Clip to the valid uint8 range [0, 255] and assign to the output array.
-        reconstructed_uint8_array[i, :] = np.clip(reconstructed_channel, 0, 254).astype(np.uint8)
+        # Clip to the range [0, 20] and assign to the output array.
+        reconstructed_uint8_array[i, :] = np.clip(reconstructed_channel, 0, 20).astype(np.uint8)
         
     return reconstructed_uint8_array
 
