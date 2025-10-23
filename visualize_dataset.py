@@ -56,7 +56,7 @@ def visualize_dataset(repo_name, n_examples):
 
 def get_args_parser():
     parser = argparse.ArgumentParser('Visualize random examples from a dataset repository', add_help=False)
-    parser.add_argument('--repo_name',default="eminorhan/card",type=str, help='HF repo name')
+    parser.add_argument('--repo_name',default="eminorhan/chen",type=str, help='HF repo name')
     parser.add_argument('--n_examples',default=6,type=int, help='number of examples to display')
     return parser
 
@@ -64,10 +64,10 @@ if __name__ == '__main__':
 
     # list of admissible dataset repositories
     # repo_list = [
-    #     "eminorhan/xiao", "eminorhan/neupane-ppc", "eminorhan/card", "eminorhan/willett", "eminorhan/churchland", "eminorhan/neupane-entorhinal", 
-    #     "eminorhan/kim", "eminorhan/even-chen", "eminorhan/papale", "eminorhan/perich", "eminorhan/wojcik", "eminorhan/makin", 
-    #     "eminorhan/h2", "eminorhan/lanzarini", "eminorhan/athalye", "eminorhan/m1-a", "eminorhan/m1-b", "eminorhan/h1", "eminorhan/moore",
-    #     "eminorhan/temmar", "eminorhan/rajalingham", "eminorhan/dmfc-rsg", "eminorhan/m2", "eminorhan/area2-bump" 
+    #     "eminorhan/xiao", "eminorhan/neupane-ppc", "eminorhan/chen", "eminorhan/card", "eminorhan/willett", "eminorhan/churchland",
+    #     "eminorhan/neupane-entorhinal", "eminorhan/kim", "eminorhan/even-chen", "eminorhan/papale", "eminorhan/perich", "eminorhan/wojcik",  
+    #     "eminorhan/makin", "eminorhan/h2", "eminorhan/lanzarini", "eminorhan/athalye", "eminorhan/m1-a", "eminorhan/m1-b", "eminorhan/h1", 
+    #     "eminorhan/moore", "eminorhan/temmar", "eminorhan/rajalingham", "eminorhan/dmfc-rsg", "eminorhan/m2", "eminorhan/area2-bump" 
     # ]
 
     args = get_args_parser()
