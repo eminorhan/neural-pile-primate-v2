@@ -3,7 +3,7 @@
 
 # Spiking neural activity data recorded from primates 
 
-~37B uncompressed tokens of spiking neural activity data recorded from primates (tokens=neurons x time bins). Unless otherwise noted, the data consist of spike counts in 20 ms time bins recorded from each neuron. 
+~38B uncompressed tokens of spiking neural activity data recorded from primates (tokens=neurons x time bins). Unless otherwise noted, the data consist of spike counts in 20 ms time bins recorded from each neuron. 
 
 This repository contains the code and instructions for building the dataset from scratch. The actual final dataset is hosted at [this](https://huggingface.co/datasets/eminorhan/neural-pile-primate) public HF repository.
 
@@ -19,6 +19,7 @@ The current component datasets and token counts per dataset are as follows:
 | Neupane (EC)       | 911,393,376     | [dandi:000897](https://dandiarchive.org/dandiset/000897)    | [link](data/neupane-entorhinal)| macaque  | 2        | 15       |
 | Kim                | 804,510,741     | [dandi:001357](https://dandiarchive.org/dandiset/001357)    | [link](data/kim)               | macaque  | 2        | 159      |
 | Even-Chen          | 783,441,792     | [dandi:000121](https://dandiarchive.org/dandiset/000121)    | [link](data/even-chen)         | macaque  | 2        | 12       |
+| Temmar             | 781,701,792     | [dandi:001201](https://dandiarchive.org/dandiset/001201)    | [link](data/temmar)            | macaque  | 1        | 330      |
 | Papale             | 775,618,560     | [g-node:TVSD](https://gin.g-node.org/paolo_papale/TVSD)     | [link](data/papale)            | macaque  | 2        | 2        |
 | Perich             | 688,889,368     | [dandi:000688](https://dandiarchive.org/dandiset/000688)    | [link](data/perich)            | macaque  | 4        | 111      |
 | Wojcik             | 422,724,515     | [dryad:c2fqz61kb](https://doi.org/10.5061/dryad.c2fqz61kb)  | [link](data/wojcik)            | macaque  | 2        | 50       |
@@ -30,13 +31,12 @@ The current component datasets and token counts per dataset are as follows:
 | M1-B               | 43,809,344      | [dandi:001209](https://dandiarchive.org/dandiset/001209)    | [link](data/m1-b)              | macaque  | 1        | 12       |
 | H1                 | 33,686,576      | [dandi:000954](https://dandiarchive.org/dandiset/000954)    | [link](data/h1)                | human    | 1        | 40       |
 | Moore              | 30,643,839      | [dandi:001062](https://dandiarchive.org/dandiset/001062)    | [link](data/moore)             | marmoset | 1        | 1        |
-| Temmar             | 27,388,320      | [dandi:001201](https://dandiarchive.org/dandiset/001201)    | [link](data/temmar)            | macaque  | 1        | 12       |
 | Rajalingham        | 14,923,100      | [zenodo:13952210](https://zenodo.org/records/13952210)      | [link](data/rajalingham)       | macaque  | 2        | 2        |
 | DMFC-rsg           | 14,003,818      | [dandi:000130](https://dandiarchive.org/dandiset/000130)    | [link](data/dmfc-rsg)          | macaque  | 1        | 2        |
 | M2                 | 12,708,384      | [dandi:000953](https://dandiarchive.org/dandiset/000953)    | [link](data/m2)                | macaque  | 1        | 20       |
 | Area2-bump         | 7,394,070       | [dandi:000127](https://dandiarchive.org/dandiset/000127)    | [link](data/area2-bump)        | macaque  | 1        | 2        |
 
-**Total number of tokens:** 36,805,607,698
+**Total number of tokens:** 37,560,921,170
 
 The combined dataset takes up about 6 GB when stored as `.parquet` files and roughly 34 GB when stored as memory-mapped `.arrow` files (see [this](https://stackoverflow.com/a/56481636) for an explanation of the differences between these file formats). The HF `datasets` library uses `.arrow` files for local caching, so you will need at least this much free disk space in order to be able to utilize it. 
 

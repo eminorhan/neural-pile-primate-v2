@@ -81,7 +81,7 @@ if __name__ == '__main__':
             nwbfile = io.read()
 
             # we will save just spike activity
-            spike_counts = nwbfile.processing["ecephys"]["ThresholdCrossings"].data[:].T.astype(np.uint8)
+            spike_counts = nwbfile.analysis["ThresholdCrossings"].data[:].T.astype(np.uint8)
 
             # subject, session identifiers
             subject_id, session_id = extract_subject_session_id(file_path)
