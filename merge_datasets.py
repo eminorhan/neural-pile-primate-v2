@@ -15,7 +15,7 @@ def concatenate_hf_datasets_and_push(repo_list, new_repo_name, test_size):
     ds_list = []
 
     for repo_name in repo_list:
-        ds = load_dataset(repo_name, split="train", download_mode="force_redownload")
+        ds = load_dataset(repo_name, split="train")
         source_name = repo_name.split("/")[-1]  # extract the name after the last backslash
 
         ds = ds.add_column("source_dataset", [source_name] * len(ds))
@@ -46,10 +46,10 @@ if __name__ == '__main__':
     
     # list of component dataset repositories to be concatenated
     repo_list = [
-        "eminorhan/xiao", "eminorhan/neupane-ppc", "eminorhan/willett", "eminorhan/churchland", "eminorhan/neupane-entorhinal", 
-        "eminorhan/kim", "eminorhan/even-chen", "eminorhan/papale", "eminorhan/perich", "eminorhan/wojcik", "eminorhan/makin", 
-        "eminorhan/h2", "eminorhan/lanzarini", "eminorhan/athalye", "eminorhan/m1-a", "eminorhan/m1-b", "eminorhan/h1", "eminorhan/moore",
-        "eminorhan/temmar", "eminorhan/rajalingham", "eminorhan/dmfc-rsg", "eminorhan/m2", "eminorhan/area2-bump" 
+        "eminorhan/xiao", "eminorhan/neupane-ppc", "eminorhan/chen", "eminorhan/card", "eminorhan/willett", "eminorhan/churchland",
+        "eminorhan/neupane-entorhinal", "eminorhan/kim", "eminorhan/even-chen", "eminorhan/temmar", "eminorhan/papale", "eminorhan/perich", 
+        "eminorhan/wojcik", "eminorhan/makin", "eminorhan/h2", "eminorhan/lanzarini", "eminorhan/athalye", "eminorhan/m1-a", "eminorhan/m1-b", 
+        "eminorhan/h1", "eminorhan/moore", "eminorhan/rajalingham", "eminorhan/dmfc-rsg", "eminorhan/m2", "eminorhan/area2-bump" 
     ]
 
     concatenate_hf_datasets_and_push(repo_list, args.hf_repo_name, args.test_size)
