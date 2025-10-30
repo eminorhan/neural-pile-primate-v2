@@ -1,9 +1,17 @@
+import os
 import argparse
 import numpy as np
 import matplotlib.pylab as plt
 import matplotlib as mp
 from datasets import load_dataset
 
+# list of admissible dataset repositories (ordered from largest to smallest)
+REPO_LIST = [
+    "eminorhan/xiao", "eminorhan/neupane-ppc", "eminorhan/chen", "eminorhan/card", "eminorhan/willett", "eminorhan/churchland",
+    "eminorhan/neupane-entorhinal", "eminorhan/kim", "eminorhan/even-chen", "eminorhan/temmar", "eminorhan/papale", "eminorhan/perich", 
+    "eminorhan/wojcik", "eminorhan/makin", "eminorhan/h2", "eminorhan/lanzarini", "eminorhan/athalye", "eminorhan/m1-a", "eminorhan/m1-b", 
+    "eminorhan/h1", "eminorhan/moore", "eminorhan/rajalingham", "eminorhan/dmfc-rsg", "eminorhan/m2", "eminorhan/area2-bump" 
+]
 
 def visualize_dataset(repo_name, n_examples):
     """
@@ -13,9 +21,12 @@ def visualize_dataset(repo_name, n_examples):
     Args:
         repo_name (str): The name for the dataset repository.
     """
-
+    print('Loading dataset:', repo_name)
     ds = load_dataset(repo_name, split="train")
     print('Number of rows in dataset:', len(ds))
+
+    n_examples = min(n_examples, len(ds))  # handle cases where number of data rows is smaller than n_examples
+    print('Number of rows is smaller than n_examples; adjusted n_examples to:', n_examples)
 
     indices = np.random.choice(np.arange(0, len(ds)), size=n_examples, replace=False).tolist()
     print('Random indices ready ...')
@@ -30,7 +41,7 @@ def visualize_dataset(repo_name, n_examples):
 
     for i in range(n_examples):
         ax[i] = plt.subplot(n_1, n_2, i + 1)
-        x = np.array(subdata[i])
+        x = np.array(subdata[i], dtype=np.uint8)
         print(f"(Spike count sample {i}) dtype / shape / max: {x.dtype} / {x.shape} / {x.max()}")
         plt.imshow(x, interpolation='nearest', aspect='auto', cmap='gray_r')
         plt.xlim([0, x.shape[-1]+1])
@@ -51,27 +62,35 @@ def visualize_dataset(repo_name, n_examples):
     mp.rcParams['patch.linewidth'] = 1.15
     mp.rcParams['font.sans-serif'] = ['FreeSans']
     mp.rcParams['mathtext.fontset'] = 'cm'
-    plt.savefig(repo_name.split("/")[-1] + '.jpg', bbox_inches='tight', dpi=300)
 
+    os.makedirs('visuals', exist_ok=True)
+    save_path = os.path.join('visuals', repo_name.split("/")[-1] + '.jpg')
+    plt.savefig(save_path, bbox_inches='tight', dpi=300)
+    print(f"Saved figure to {save_path}")
+    plt.close()
 
 def get_args_parser():
-    parser = argparse.ArgumentParser('Visualize random examples from a dataset repository', add_help=False)
-    parser.add_argument('--repo_name',default="eminorhan/chen",type=str, help='HF repo name')
-    parser.add_argument('--n_examples',default=6,type=int, help='number of examples to display')
+    parser = argparse.ArgumentParser(description='Plot random samples from component datasets as a quick visual sanity check.')
+    
+    # Group for mutually exclusive arguments
+    group = parser.add_mutually_exclusive_group()
+    group.add_argument('--repo_name', type=str, choices=REPO_LIST, default="eminorhan/chen", help='Visualize random samples from a single specified component dataset.')
+    group.add_argument('--plot_all', action='store_true', help='Visualize random samples from all component datasets in REPO_LIST.')
+    parser.add_argument('--n_examples', default=9, type=int, help='Number of random samples to display.')
     return parser
 
 if __name__ == '__main__':
 
-    # list of admissible dataset repositories
-    # repo_list = [
-    #     "eminorhan/xiao", "eminorhan/neupane-ppc", "eminorhan/chen", "eminorhan/card", "eminorhan/willett", "eminorhan/churchland",
-    #     "eminorhan/neupane-entorhinal", "eminorhan/kim", "eminorhan/even-chen", "eminorhan/papale", "eminorhan/perich", "eminorhan/wojcik",  
-    #     "eminorhan/makin", "eminorhan/h2", "eminorhan/lanzarini", "eminorhan/athalye", "eminorhan/m1-a", "eminorhan/m1-b", "eminorhan/h1", 
-    #     "eminorhan/moore", "eminorhan/temmar", "eminorhan/rajalingham", "eminorhan/dmfc-rsg", "eminorhan/m2", "eminorhan/area2-bump" 
-    # ]
+    parser = get_args_parser()
+    args = parser.parse_args()
+    print("Running with arguments:", args)
 
-    args = get_args_parser()
-    args = args.parse_args()
-    print(args)
-
-    visualize_dataset(args.repo_name, args.n_examples)
+    if args.plot_all:
+        print("\n--- Plotting all datasets ---")
+        for repo_name in REPO_LIST:
+            visualize_dataset(repo_name, args.n_examples)
+            print("-" * 20)
+    else:
+        # If not plotting all, args.repo_name is guaranteed to exist
+        print(f"\n--- Plotting single dataset: {args.repo_name} ---")
+        visualize_dataset(args.repo_name, args.n_examples)
