@@ -64,3 +64,11 @@ Users also have the option to visualize `n_examples` random examples from each c
 python visualize_datasets.py --plot_all --n_examples 9
 ```
 This will save the visualizations for all component datasets in a folder called `visuals` as in [here](visuals).
+
+## Extracting motifs
+For a more fine-grained analysis of the data, I also wrote a simple script in [`extract_motifs.py`](extract_motifs.py) that extracts motifs from the data and keeps track of their statistics over the whole dataset. Given a particular patch size (*p_n*, *p_t*), *e.g.* (4, 16), *i.e.* 4 neurons and 16 time bins, this script will extract all **unique** patches of this size over the entire dataset together with their frequency of occurrence. This script will also visualize the most common motifs in a figure like the following:
+
+![](primate_(4x16)_motifs.jpeg)
+
+For (4, 16) patches, I find that 311M unique patches are instantiated over the whole dataset (out of a maximum possible of 630M unique patches). The "silent" patch (all zeros) dominates the dataset with something like 146M occurrences overall, distantly followed by various single spike patches, as shown above.
+

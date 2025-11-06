@@ -186,7 +186,7 @@ if __name__ == "__main__":
     DATA_COLUMN = "spike_counts"
     
     # 3. Specify patch size
-    PATCH_SIZE = (4, 16) # (p0, p1)
+    PATCH_SIZE = (1, 5) # (p0, p1)
     
     # 4. Specify the data type of your arrays (for reconstructing/printing) (e.g., np.uint8, np.float32, etc.)
     DATA_DTYPE = np.uint8 
