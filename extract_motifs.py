@@ -162,7 +162,7 @@ def visualize_top_k_patches(patch_counts: Counter, patch_size: Tuple[int, int], 
         ax = axes_flat[i]
         
         # Display the patch
-        ax.imshow(patch_array, cmap='jet')
+        ax.imshow(patch_array, cmap='jet', vmin=0, vmax=1)
         
         ax.set_title(f"#{i+1}\n(Count: {count})", fontsize=10)
         ax.set_axis_off() # Hide x and y axes
@@ -230,13 +230,13 @@ if __name__ == "__main__":
     
     # 1. Specify your dataset and split
     DATASET_NAME = "eminorhan/neural-pile-primate"
-    DATASET_SPLIT = "train+test"
+    DATASET_SPLIT = "train"
     
     # 2. Specify the column that contains the (n, t) numerical arrays.
     DATA_COLUMN = "spike_counts"
     
     # 3. Specify patch size
-    PATCH_SIZE = (1, 5) # (p0, p1)
+    PATCH_SIZE = (1, 7) # (p0, p1)
     
     # 4. Specify the data type of your arrays (for reconstructing/printing) (e.g., np.uint8, np.float32, etc.)
     DATA_DTYPE = np.uint8 
@@ -245,7 +245,7 @@ if __name__ == "__main__":
     K_TOP_PATCHES = 16 # e.g., 16 for a 4x4 grid
 
     # 6. Specify repo id for remote saving
-    HF_REPO_ID = "eminorhan/neural-pile-primate-1x5"
+    HF_REPO_ID = "eminorhan/neural-pile-primate-1x7"
 
     counts = process_and_count_patches(
         dataset_name=DATASET_NAME,
