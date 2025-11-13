@@ -2,7 +2,7 @@ import sys
 from datasets import load_dataset, load_dataset_builder
 
 
-DATASET_NAME = "eminorhan/neural-pile-primate-1x8"
+DATASET_NAME = "eminorhan/neural-pile-primate-1x7"
 SPLIT_NAME = "train"
 PROBABILITY_COLUMN = "probability"
 NUM_ROWS_TO_SUM = 131072  # number of rows from the top to sum
@@ -39,11 +39,11 @@ def calculate_cumulative_probability():
     total_rows = builder.info.splits[SPLIT_NAME].num_examples
 
     print("\n" + "="*30)
-    print("      Calculation Complete")
+    print("      Calculation complete")
     print(f"  Dataset: {DATASET_NAME}")
     print(f"  Total rows: {total_rows:,}")
-    print(f"  Rows Summed: {len(probabilities):,}")
-    print(f"  Cumulative Probability: {cumulative_prob:.10f}")
+    print(f"  Rows summed: {len(probabilities):,}")
+    print(f"  Cumulative probability: {cumulative_prob:.10f}")
     print("="*30)
 
 if __name__ == "__main__":

@@ -66,9 +66,9 @@ python visualize_datasets.py --plot_all --n_examples 9
 This will save the visualizations for all component datasets in a folder called `visuals` as in [here](visuals).
 
 ## Extracting motifs
-For a more fine-grained analysis of the data, I also wrote a simple script in [`extract_motifs.py`](extract_motifs.py) that extracts motifs from the data and keeps track of their statistics over the whole dataset. Given a particular patch size (*p_n*, *p_t*), *e.g.* (4, 16), *i.e.* 4 neurons and 16 time bins, this script will extract all **unique** patches of this size over the entire dataset together with their frequency of occurrence. This script will also visualize the most common motifs in a figure like the following:
+For a more fine-grained analysis of the data, I also wrote a simple script in [`extract_motifs.py`](extract_motifs.py) that extracts motifs from the data and keeps track of their statistics over the whole dataset. Given a particular motif or patch size (*p_n*, *p_t*), *e.g.* (1, 8), *i.e.* 1 neuron and 8 time bins, this script will extract all **unique** motifs of this size over the entire dataset together with their frequency of occurrence. This script will also visualize the most common motifs in a figure like the following (blue is 0, red is 1 in this figure):
 
-![](primate_(4x16)_motifs.jpeg)
+![](primate_(1x8)_motifs.jpeg)
 
-For (4, 16) patches, I find that 311M unique patches are instantiated over the whole dataset (out of a maximum possible of 630M unique patches). The "silent" patch (all zeros) dominates the dataset with something like 146M occurrences overall, distantly followed by various single spike patches, as shown above.
+For (1, 8) motifs, I find that ~9M unique motifs are instantiated over the whole dataset (out of a maximum possible of ~8B unique motifs of this size). The "silent" motif (all zeros) dominates the dataset with something like ~3M occurrences overall, distantly followed by various single spike motifs, then the all ones motif (111...1), then various two spike motifs, *etc.*, as shown above.
 
