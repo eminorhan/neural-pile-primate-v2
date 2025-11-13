@@ -63,8 +63,8 @@ def visualize_dataset(repo_name, n_examples):
     mp.rcParams['font.sans-serif'] = ['FreeSans']
     mp.rcParams['mathtext.fontset'] = 'cm'
 
-    os.makedirs('visuals', exist_ok=True)
-    save_path = os.path.join('visuals', repo_name.split("/")[-1] + '.jpg')
+    os.makedirs('rasters', exist_ok=True)
+    save_path = os.path.join('rasters', repo_name.split("/")[-1] + '.jpg')
     plt.savefig(save_path, bbox_inches='tight', dpi=300)
     print(f"Saved figure to {save_path}")
     plt.close()
