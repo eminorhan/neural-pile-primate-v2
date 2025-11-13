@@ -228,24 +228,24 @@ def save_patches_to_dataset(
 
 if __name__ == "__main__":
     
-    # 1. Specify your dataset and split
+    # Specify the dataset and split
     DATASET_NAME = "eminorhan/neural-pile-primate"
     DATASET_SPLIT = "train"
     
-    # 2. Specify the column that contains the (n, t) numerical arrays.
+    # Specify the column that contains the (n, t) numerical arrays.
     DATA_COLUMN = "spike_counts"
     
-    # 3. Specify patch size
-    PATCH_SIZE = (1, 7) # (p0, p1)
+    # Specify patch size
+    PATCH_SIZE = (1, 9)  # (p0, p1)
     
-    # 4. Specify the data type of your arrays (for reconstructing/printing) (e.g., np.uint8, np.float32, etc.)
+    # Specify the data type of your arrays (for reconstructing/printing) (e.g., np.uint8, np.float32, etc.)
     DATA_DTYPE = np.uint8 
     
-    # 5. Specify K for top-K visualization
-    K_TOP_PATCHES = 16 # e.g., 16 for a 4x4 grid
+    # Specify K for top-K visualization
+    K_TOP_PATCHES = 16  # e.g., 16 for a 4x4 grid
 
-    # 6. Specify repo id for remote saving
-    HF_REPO_ID = "eminorhan/neural-pile-primate-1x7"
+    # Specify repo id for remote saving
+    HF_REPO_ID = "eminorhan/neural-pile-primate-1x9"
 
     counts = process_and_count_patches(
         dataset_name=DATASET_NAME,
