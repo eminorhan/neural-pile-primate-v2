@@ -236,7 +236,7 @@ if __name__ == "__main__":
     DATA_COLUMN = "spike_counts"
     
     # Specify patch size
-    PATCH_SIZE = (1, 9)  # (p0, p1)
+    PATCH_SIZE = (1, 15)  # (p0, p1)
     
     # Specify the data type of your arrays (for reconstructing/printing) (e.g., np.uint8, np.float32, etc.)
     DATA_DTYPE = np.uint8 
@@ -245,7 +245,7 @@ if __name__ == "__main__":
     K_TOP_PATCHES = 16  # e.g., 16 for a 4x4 grid
 
     # Specify repo id for remote saving
-    HF_REPO_ID = "eminorhan/neural-pile-primate-1x9"
+    HF_REPO_ID = "eminorhan/neural-pile-primate-1x15"
 
     counts = process_and_count_patches(
         dataset_name=DATASET_NAME,
