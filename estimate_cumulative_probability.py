@@ -5,7 +5,7 @@ from datasets import load_dataset, load_dataset_builder
 DATASET_NAME = "eminorhan/neural-pile-primate-1x10"
 SPLIT_NAME = "train"
 PROBABILITY_COLUMN = "probability"
-NUM_ROWS_TO_SUM = 131072  # number of rows from the top to sum
+NUM_ROWS_TO_SUM = 64000  # number of rows from the top to sum
 
 
 def calculate_cumulative_probability():

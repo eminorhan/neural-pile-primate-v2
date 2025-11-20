@@ -56,8 +56,7 @@ def rebin_counts(X, bin_size_ms=20):
     Re-bins count data into larger time bins.
 
     Args:
-        X: A NumPy array of shape (t, n) where t is the number of 1ms time bins
-           and n is the number of events in each bin.
+        X: A NumPy array of shape (t, n) where t is the number of 1ms time bins and n is the number of events in each bin.
         bin_size_ms: The desired size of the new time bins in milliseconds.
 
     Returns:
@@ -72,6 +71,10 @@ def rebin_counts(X, bin_size_ms=20):
     if bin_size_ms <= 0 or not isinstance(bin_size_ms, int):
         print("Bin size must be a positive integer.")
         return None
+
+    # No rebinning needed for bin_size = 1ms
+    if bin_size_ms == 1:
+        return X.copy()
 
     t, n = X.shape
     t_new = t // bin_size_ms  # Integer division to get the number of new bins
