@@ -1,3 +1,4 @@
+import argparse
 import numpy as np
 import pickle
 from datasets import load_dataset
@@ -5,30 +6,23 @@ from typing import Dict, Tuple
 import os
 from tqdm import tqdm
 
-def compute_cosine_similarity_batch(query_vectors: np.ndarray, reference_vectors: np.ndarray) -> np.ndarray:
+def compute_similarity_batch(query_vectors: np.ndarray, reference_vectors: np.ndarray) -> np.ndarray:
     """
-    Computes cosine similarity between a batch of query vectors and reference vectors.
+    Computes a similarity metric between a batch of query vectors and reference vectors.
     
     Args:
         query_vectors: Shape (batch_size, features)
-        reference_vectors: Shape (num_references, features) - Must be pre-normalized!
+        reference_vectors: Shape (num_references, features)
     
     Returns:
-        indices: Shape (batch_size,) - The index of the most similar reference vector for each query.
+        indices: Shape (batch_size,) - The index of the reference vector with highest dot product.
     """
-    # 1. Normalize Query Vectors
-    # Compute norms (add epsilon to avoid division by zero)
-    query_norms = np.linalg.norm(query_vectors, axis=1, keepdims=True)
-    query_norms[query_norms == 0] = 1e-10
-    query_normalized = query_vectors / query_norms
-    
-    # 2. Compute Dot Product (Cosine Similarity)
+    # Compute Dot Product directly (Unnormalized)
     # (Batch, Feat) @ (Feat, Refs) -> (Batch, Refs)
-    # Since inputs are normalized, dot product == cosine similarity
-    similarity_matrix = np.dot(query_normalized, reference_vectors.T)
+    similarity_matrix = np.dot(query_vectors, reference_vectors.T)
     
-    # 3. Find Argmax
-    # Returns the index (0 to K) of the maximum similarity for each query
+    # Find Argmax
+    # Returns the index (0 to K) of the maximum dot product for each query
     best_indices = np.argmax(similarity_matrix, axis=1)
     
     return best_indices
@@ -103,7 +97,7 @@ def assign_indices_and_save(
             batch_arrays = np.array(batch_data['patch'], dtype=np.float32)
             
             # Find closest reference indices
-            assigned_indices = compute_cosine_similarity_batch(batch_arrays, ref_vectors_normalized)
+            assigned_indices = compute_similarity_batch(batch_arrays, ref_vectors_normalized)
             
             # Store in dictionary
             for j, index_assignment in enumerate(assigned_indices):
@@ -133,9 +127,17 @@ def load_index_dictionary(path: str) -> Dict[bytes, int]:
 
 if __name__ == "__main__":
     
-    HF_REPO_ID = "eminorhan/neural-pile-primate-1x10"
-    K_LIMIT = 128_000 - 2 
-    OUTPUT_FILENAME = "patch_index_map.pkl"
+    parser = argparse.ArgumentParser(description="Embarrasingly simple tokenizer for neural pile motifs.")
+    parser.add_argument("--hf_repo_id", type=str, default="eminorhan/neural-pile-primate-1x15", help="Hugging Face repo ID for loading the motifs.")
+    parser.add_argument("--output_filename", type=str, default="motif_index_map_primate_1x15_128k.pkl", help="Output file name where the motif index map will be saved.")
+    parser.add_argument("--k_limit", type=int, default=128_000-2, help="Max index to be used for encoding the motifs.")
+    args = parser.parse_args()
+
+    # From argparse
+    HF_REPO_ID = args.hf_repo_id
+    OUTPUT_FILENAME = args.output_filename
+    K_LIMIT = args.k_limit
+
     PATCH_DTYPE = np.uint8 
 
     print("--- Patch Index Assigner ---")
@@ -152,6 +154,6 @@ if __name__ == "__main__":
     
     # --- VERIFICATION ---
     # Uncomment to test loading
-    # print("\nVerifying load...")
-    # loaded_map = load_index_dictionary(OUTPUT_FILENAME)
-    # print(f"Successfully loaded map with {len(loaded_map)} keys.")
+    print("\nVerifying load...")
+    loaded_map = load_index_dictionary(OUTPUT_FILENAME)
+    print(f"Successfully loaded map with {len(loaded_map)} keys.")

@@ -1,3 +1,4 @@
+import argparse
 import numpy as np
 import sys
 from datasets import load_dataset, Dataset
@@ -227,25 +228,30 @@ def save_patches_to_dataset(
 
 
 if __name__ == "__main__":
-    
+
+    parser = argparse.ArgumentParser(description="Extract motifs from the primate pile.")
+    parser.add_argument("--hf_repo_id", type=str, default="eminorhan/neural-pile-primate-1x15", help="The Hugging Face Repo ID for remote saving.")
+    parser.add_argument("--patch_size", type=int, nargs=2, default=[1, 15], metavar=('HEIGHT', 'WIDTH'), help="The patch size as two integers (e.g., --patch-size 1 15).")
+    args = parser.parse_args()
+
     # Specify the dataset and split
     DATASET_NAME = "eminorhan/neural-pile-primate"
     DATASET_SPLIT = "train"
     
     # Specify the column that contains the (n, t) numerical arrays.
     DATA_COLUMN = "spike_counts"
-    
-    # Specify patch size
-    PATCH_SIZE = (1, 15)  # (p0, p1)
-    
+        
     # Specify the data type of your arrays (for reconstructing/printing) (e.g., np.uint8, np.float32, etc.)
     DATA_DTYPE = np.uint8 
     
     # Specify K for top-K visualization
     K_TOP_PATCHES = 16  # e.g., 16 for a 4x4 grid
 
-    # Specify repo id for remote saving
-    HF_REPO_ID = "eminorhan/neural-pile-primate-1x15"
+    # Specify repo id from argparse for remote saving
+    HF_REPO_ID = args.hf_repo_id
+
+    # Convert list [p0, p1] from argparse to tuple (p0, p1)
+    PATCH_SIZE = tuple(args.patch_size)
 
     counts = process_and_count_patches(
         dataset_name=DATASET_NAME,
@@ -254,7 +260,7 @@ if __name__ == "__main__":
         patch_size=PATCH_SIZE
     )
     
-    print("\n--- Top 10 Most Common Patches ---")
+    print("\n--- Top 10 Most Common Motifs ---")
     for i, (patch_bytes, count) in enumerate(counts.most_common(10)):
         print(f"\n#{i+1}: Count = {count}")
         
