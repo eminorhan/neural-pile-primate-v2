@@ -234,24 +234,16 @@ if __name__ == "__main__":
     parser.add_argument("--patch_size", type=int, nargs=2, default=[1, 15], metavar=('HEIGHT', 'WIDTH'), help="The patch size as two integers (e.g., --patch-size 1 15).")
     args = parser.parse_args()
 
-    # Specify the dataset and split
+    # From argparse
+    HF_REPO_ID = args.hf_repo_id  # repo id for remote saving
+    PATCH_SIZE = tuple(args.patch_size) # convert list [p0, p1] to tuple (p0, p1)
+
+    # Other arguments
     DATASET_NAME = "eminorhan/neural-pile-primate"
-    DATASET_SPLIT = "train"
-    
-    # Specify the column that contains the (n, t) numerical arrays.
-    DATA_COLUMN = "spike_counts"
-        
-    # Specify the data type of your arrays (for reconstructing/printing) (e.g., np.uint8, np.float32, etc.)
+    DATASET_SPLIT = "train"    
+    DATA_COLUMN = "spike_counts"        
     DATA_DTYPE = np.uint8 
-    
-    # Specify K for top-K visualization
-    K_TOP_PATCHES = 16  # e.g., 16 for a 4x4 grid
-
-    # Specify repo id from argparse for remote saving
-    HF_REPO_ID = args.hf_repo_id
-
-    # Convert list [p0, p1] from argparse to tuple (p0, p1)
-    PATCH_SIZE = tuple(args.patch_size)
+    K_TOP_PATCHES = 16  # top-k visualization: e.g., 16 for a 4x4 grid
 
     counts = process_and_count_patches(
         dataset_name=DATASET_NAME,

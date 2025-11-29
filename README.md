@@ -66,9 +66,9 @@ python visualize_datasets.py --plot_all --n_examples 9
 This will save the visualizations for all component datasets in a folder called `rasters` as in [here](rasters).
 
 ## Extracting motifs
-For a more fine-grained analysis of the data, I also wrote a simple script in [`extract_motifs.py`](extract_motifs.py) that extracts motifs from the data and keeps track of their statistics over the whole dataset. Given a particular motif or patch size (*p_n*, *p_t*), *e.g.* (1, 8), *i.e.* 1 neuron and 8 time bins, this script will extract all **unique** motifs of this size over the entire dataset together with their frequency of occurrence. This script will also visualize the most common motifs in a figure like the following (blue is 0, red is 1 in this figure):
+For a more fine-grained analysis of the data, I also wrote a simple script in [`extract_motifs.py`](extract_motifs.py) that extracts motifs from the data and keeps track of their statistics over the whole dataset. Given a particular motif or patch size (*p_n*, *p_t*), *e.g.* (1, 10), *i.e.* 1 neuron and 10 time bins, this script will extract all **unique** motifs of this size over the entire dataset together with their frequency of occurrence. This script will also visualize the most common motifs in a figure like the following (blue is 0, red is 1 in this figure):
 
-![](motifs/primate_(1x8)_motifs.jpeg)
+![](motifs/primate_(1x10)_motifs.jpeg)
 
-For (1, 8) motifs, I find that ~9M unique motifs are instantiated over the whole dataset (out of a maximum possible of ~8B unique motifs of this size). The "silent" motif (all zeros) dominates the dataset with something like ~3M occurrences overall, distantly followed by various single spike motifs, followed by the "all ones" motif (111...1), followed by various two spike motifs, *etc.*, as shown above. More examples can be found in the [motifs](motifs) folder.
+For (1, 10) motifs, ~28M unique motifs are instantiated over the whole dataset (out of a maximum possible of ~4B unique motifs of this size). The "silent" motif (all zeros) dominates the dataset with something like ~2B occurrences overall, distantly followed by various single spike motifs, followed by the "all ones" motif (111...1), followed by various two spike motifs, *etc.*, as shown above. More examples can be found in the [motifs](motifs) folder.
 

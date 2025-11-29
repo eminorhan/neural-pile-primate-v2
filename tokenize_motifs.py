@@ -138,6 +138,7 @@ if __name__ == "__main__":
     OUTPUT_FILENAME = args.output_filename
     K_LIMIT = args.k_limit
 
+    # Other arguments
     PATCH_DTYPE = np.uint8 
 
     print("--- Patch Index Assigner ---")
