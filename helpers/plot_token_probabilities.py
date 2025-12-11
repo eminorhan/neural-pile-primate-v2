@@ -1,3 +1,4 @@
+import torch
 import numpy as np
 import matplotlib.pyplot as plt
 import os
@@ -22,6 +23,29 @@ def plot_probabilities(npy_filepath="primate_token_probabilities.npy", output_im
     except Exception as e:
         print(f"Error reading .npy file: {e}")
         return
+
+    # --- Weight Calculation ---
+    weights = np.zeros_like(probs, dtype=np.float64)
+    
+    # Define the cutoff point
+    cutoff = 10
+    
+    # 1. Calculate 1/sqrt(p) for spike counts 0 to cutoff
+    # We add a tiny epsilon to avoid division by zero if a probability is exactly 0
+    epsilon = 1e-9
+    # Slicing is exclusive at the end, so cutoff+1 covers index cutoff
+    weights[:cutoff+1] = 1.0 / (probs[:cutoff+1] + epsilon)
+    
+    # 2. For remaining spike counts (cutoff+1 to 255), clip them to the weight of count cutoff
+    weights[cutoff+1:] = weights[cutoff]
+    
+    # Save the result to the requested file as a torch tensor
+    weights_tensor = torch.from_numpy(weights).float() # Ensures float32
+    output_pt_file = "primate_token_weights_inv.pt"
+    torch.save(weights_tensor, output_pt_file)
+    print(f"Weights converted to Torch Tensor (float32) and saved to '{output_pt_file}'")
+    print(f"Token weights: {weights_tensor}")
+    # --------------------------
 
     # Create the x-axis (0 to 255)
     x = np.arange(len(probs))
