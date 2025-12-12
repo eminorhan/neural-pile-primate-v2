@@ -152,7 +152,7 @@ def visualize_top_k_patches(patch_counts: Counter, patch_size: Tuple[int, int], 
     ncols = nrows
     
     fig, axes = plt.subplots(nrows, ncols, figsize=(ncols * 2, nrows * 2))
-    fig.suptitle(f"Top {k} most common patches ({patch_size[0]}x{patch_size[1]})", fontsize=16)
+    fig.suptitle(f"Top {k} most common motifs ({patch_size[0]}x{patch_size[1]})", fontsize=16)
 
     # Flatten axes array for easy iteration, regardless of nrows/ncols
     axes_flat = axes.flatten()
@@ -230,8 +230,8 @@ def save_patches_to_dataset(
 if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description="Extract motifs from the primate pile.")
-    parser.add_argument("--hf_repo_id", type=str, default="eminorhan/neural-pile-primate-1x15", help="The Hugging Face Repo ID for remote saving.")
-    parser.add_argument("--patch_size", type=int, nargs=2, default=[1, 15], metavar=('HEIGHT', 'WIDTH'), help="The patch size as two integers (e.g., --patch-size 1 15).")
+    parser.add_argument("--hf_repo_id", type=str, default="eminorhan/neural-pile-primate-15x1", help="The Hugging Face Repo ID for remote saving.")
+    parser.add_argument("--patch_size", type=int, nargs=2, default=[15, 1], metavar=('HEIGHT', 'WIDTH'), help="The patch size as two integers (e.g., --patch-size 1 15).")
     args = parser.parse_args()
 
     # From argparse

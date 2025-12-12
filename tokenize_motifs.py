@@ -112,13 +112,17 @@ def assign_indices_and_save(
 
     # --- STEP 3: SAVE TO DISK ---
     print(f"\nSaving dictionary to '{output_path}' using Pickle...")
-    try:
-        with open(output_path, 'wb') as f:
-            pickle.dump(patch_index_map, f)
-        print("Save complete.")
-        print(f"Dictionary size: {len(patch_index_map)} entries.")
-    except Exception as e:
-        print(f"Error saving file: {e}")
+    # Prepare the data structure to save
+    output_data = {
+        "index_map": patch_index_map,
+        "patch_size": patch_size,
+        "k_limit": actual_k_limit
+    }
+    with open(output_path, 'wb') as f:
+        pickle.dump(output_data, f)
+    print("Save complete.")
+    print(f"Dictionary size: {len(patch_index_map)} entries.")
+    print(f"Metadata saved: Patch Size={patch_size}, K Limit={actual_k_limit}")
 
 def load_index_dictionary(path: str) -> Dict[bytes, int]:
     """Helper function to demonstrate how to load the saved dictionary."""
