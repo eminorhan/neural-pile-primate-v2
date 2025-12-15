@@ -4,6 +4,7 @@ import pickle
 from datasets import load_dataset
 from typing import Dict, Tuple
 import os
+import re
 from tqdm import tqdm
 
 def compute_similarity_batch(query_vectors: np.ndarray, reference_vectors: np.ndarray) -> np.ndarray:
@@ -51,7 +52,9 @@ def assign_indices_and_save(
         return
 
     total_rows = len(ds)
-    print(f"Dataset loaded. Total unique patches: {total_rows}")
+    match = re.search(r"(\d+)x(\d+)$", repo_id)
+    patch_size = (int(match.group(1)), int(match.group(2)))
+    print(f"Dataset loaded. Total unique patches: {total_rows}; patch shape: {patch_size}")
     
     # Ensure K is not larger than the dataset
     actual_k_limit = min(k_limit, total_rows - 1)
@@ -64,7 +67,8 @@ def assign_indices_and_save(
     
     # Convert lists to numpy array (Shape: K+1, Flattened_Dim)
     ref_arrays = np.array(ref_data['patch'], dtype=np.float32)
-    
+    print(f"Ref_arrays shape: {ref_arrays.shape}")
+
     # Pre-normalize reference vectors for fast cosine similarity later
     ref_norms = np.linalg.norm(ref_arrays, axis=1, keepdims=True)
     ref_norms[ref_norms == 0] = 1e-10
@@ -132,9 +136,9 @@ def load_index_dictionary(path: str) -> Dict[bytes, int]:
 if __name__ == "__main__":
     
     parser = argparse.ArgumentParser(description="Embarrasingly simple tokenizer for neural pile motifs.")
-    parser.add_argument("--hf_repo_id", type=str, default="eminorhan/neural-pile-primate-1x15", help="Hugging Face repo ID for loading the motifs.")
-    parser.add_argument("--output_filename", type=str, default="motif_index_map_primate_1x15_128k.pkl", help="Output file name where the motif index map will be saved.")
-    parser.add_argument("--k_limit", type=int, default=128_000-2, help="Max index to be used for encoding the motifs.")
+    parser.add_argument("--hf_repo_id", type=str, default="eminorhan/neural-pile-primate-15x1", help="Hugging Face repo ID for loading the motifs.")
+    parser.add_argument("--output_filename", type=str, default="tokenizer_primate_15x1_32k.pkl", help="Output file name where the motif index map will be saved.")
+    parser.add_argument("--k_limit", type=int, default=32_000-2, help="Max index to be used for encoding the motifs.")
     args = parser.parse_args()
 
     # From argparse

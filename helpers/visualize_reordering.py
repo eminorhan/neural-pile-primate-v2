@@ -31,7 +31,7 @@ def reorder_neurons(spike_counts, method='correlation'):
         # Fallback if clustering fails (e.g., all zeros)
         return spike_counts
 
-def save_comparison_grid(dataset_name, num_samples=8, output_filename='spike_sorting_comparison.jpg'):
+def save_comparison_grid(dataset_name, num_samples=8, output_filename='reordering_comparison.jpg'):
     """
     Loads dataset, samples n examples, plots (2, n) grid, and saves to JPG.
     """
@@ -90,4 +90,6 @@ if __name__ == "__main__":
 
     HF_REPO_NAME = "eminorhan/neural-pile-primate"
     NUM_SAMPLES = 8
-    save_comparison_grid(HF_REPO_NAME, num_samples=NUM_SAMPLES, output_filename="primate_reordering_comparison.jpeg")
+    OUTPUT_FILENAME = "primate_reordering_comparison.jpeg"
+
+    save_comparison_grid(HF_REPO_NAME, num_samples=NUM_SAMPLES, output_filename=OUTPUT_FILENAME)
