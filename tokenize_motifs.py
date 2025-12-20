@@ -136,8 +136,8 @@ def load_index_dictionary(path: str) -> Dict[bytes, int]:
 if __name__ == "__main__":
     
     parser = argparse.ArgumentParser(description="Embarrasingly simple tokenizer for neural pile motifs.")
-    parser.add_argument("--hf_repo_id", type=str, default="eminorhan/neural-pile-primate-15x1", help="Hugging Face repo ID for loading the motifs.")
-    parser.add_argument("--output_filename", type=str, default="tokenizer_primate_15x1_32k.pkl", help="Output file name where the motif index map will be saved.")
+    parser.add_argument("--hf_repo_id", type=str, default="eminorhan/neural-pile-primate-1x15", help="Hugging Face repo ID for loading the motifs.")
+    parser.add_argument("--output_filename", type=str, default="tokenizer_primate_1x15_32k.pkl", help="Output file name where the motif index map will be saved.")
     parser.add_argument("--k_limit", type=int, default=32_000-2, help="Max index to be used for encoding the motifs.")
     args = parser.parse_args()
 
