@@ -230,8 +230,8 @@ def save_patches_to_dataset(
 if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description="Extract motifs from the primate pile.")
-    parser.add_argument("--hf_repo_id", type=str, default="eminorhan/neural-pile-primate-15x1", help="The Hugging Face Repo ID for remote saving.")
-    parser.add_argument("--patch_size", type=int, nargs=2, default=[15, 1], metavar=('HEIGHT', 'WIDTH'), help="The patch size as two integers (e.g., --patch-size 1 15).")
+    parser.add_argument("--hf_repo_id", type=str, default="eminorhan/neural-pile-primate-reordered-1x15", help="The Hugging Face Repo ID for remote saving.")
+    parser.add_argument("--patch_size", type=int, nargs=2, default=[1, 15], metavar=('HEIGHT', 'WIDTH'), help="The patch size as two integers (e.g., --patch-size 1 15).")
     args = parser.parse_args()
 
     # From argparse
@@ -239,20 +239,26 @@ if __name__ == "__main__":
     PATCH_SIZE = tuple(args.patch_size) # convert list [p0, p1] to tuple (p0, p1)
 
     # Other arguments
-    DATASET_NAME = "eminorhan/neural-pile-primate"
-    DATASET_SPLIT = "train"    
+    DATASET_NAME = "eminorhan/neural-pile-primate-reordered"
+    DATASET_SPLITS = ["train", "test"]  # including both splits    
     DATA_COLUMN = "spike_counts"        
     DATA_DTYPE = np.uint8 
     K_TOP_PATCHES = 16  # top-k visualization: e.g., 16 for a 4x4 grid
 
-    counts = process_and_count_patches(
-        dataset_name=DATASET_NAME,
-        split=DATASET_SPLIT,
-        column_name=DATA_COLUMN,
-        patch_size=PATCH_SIZE
-    )
+    counts = Counter()
+
+    # Iterate over both splits and accumulate counts
+    for split in DATASET_SPLITS:
+        print(f"\n--- Processing Split: {split} ---")
+        split_counts = process_and_count_patches(
+            dataset_name=DATASET_NAME,
+            split=split,
+            column_name=DATA_COLUMN,
+            patch_size=PATCH_SIZE
+        )
+        counts.update(split_counts)
     
-    print("\n--- Top 10 Most Common Motifs ---")
+    print("\n--- Top 10 Most Common Motifs (Aggregated) ---")
     for i, (patch_bytes, count) in enumerate(counts.most_common(10)):
         print(f"\n#{i+1}: Count = {count}")
         
