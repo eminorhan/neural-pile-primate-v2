@@ -49,7 +49,7 @@ def main():
     # Configuration
     SOURCE_REPO = "eminorhan/neural-pile-primate"
     TARGET_REPO = "eminorhan/neural-pile-primate-reordered"
-    NUM_PROC = 64  # Adjust based on available CPU cores
+    NUM_PROC = 72  # Adjust based on available CPU cores
     
     print(f"Loading dataset from {SOURCE_REPO}...")
     dataset = load_dataset(SOURCE_REPO)

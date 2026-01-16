@@ -74,7 +74,7 @@ def get_args_parser():
     
     # Group for mutually exclusive arguments
     group = parser.add_mutually_exclusive_group()
-    group.add_argument('--repo_name', type=str, choices=REPO_LIST, default="eminorhan/chen", help='Visualize random samples from a single specified component dataset.')
+    group.add_argument('--repo_name', type=str, choices=REPO_LIST+["eminorhan/neural-pile-primate", "eminorhan/neural-pile-primate-reordered"], default="eminorhan/neural-pile-primate", help='Visualize random samples from a specified dataset.')
     group.add_argument('--plot_all', action='store_true', help='Visualize random samples from all component datasets in REPO_LIST.')
     parser.add_argument('--n_examples', default=9, type=int, help='Number of random samples to display.')
     return parser
