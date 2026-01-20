@@ -22,13 +22,14 @@ def visualize_dataset(repo_name, n_examples):
         repo_name (str): The name for the dataset repository.
     """
     print('Loading dataset:', repo_name)
-    ds = load_dataset(repo_name, split="train")
+    ds = load_dataset(repo_name, split="train", download_mode='force_redownload')
     print('Number of rows in dataset:', len(ds))
 
     n_examples = min(n_examples, len(ds))  # handle cases where number of data rows is smaller than n_examples
     print('Number of rows is smaller than n_examples; adjusted n_examples to:', n_examples)
 
-    indices = np.random.choice(np.arange(0, len(ds)), size=n_examples, replace=False).tolist()
+    indices = np.arange(n_examples).tolist()  # display first n_examples instead
+    # indices = np.random.choice(np.arange(0, len(ds)), size=n_examples, replace=False).tolist()
     print('Random indices ready ...')
     subdata = [ds[i]['spike_counts'] for i in indices]
     print('Subdata ready ...')
@@ -74,7 +75,7 @@ def get_args_parser():
     
     # Group for mutually exclusive arguments
     group = parser.add_mutually_exclusive_group()
-    group.add_argument('--repo_name', type=str, choices=REPO_LIST+["eminorhan/neural-pile-primate", "eminorhan/neural-pile-primate-reordered"], default="eminorhan/neural-pile-primate", help='Visualize random samples from a specified dataset.')
+    group.add_argument('--repo_name', type=str, choices=REPO_LIST+["eminorhan/neural-pile-primate", "eminorhan/neural-pile-primate-reordered"], default="eminorhan/neural-pile-primate-reordered", help='Visualize random samples from a specified dataset.')
     group.add_argument('--plot_all', action='store_true', help='Visualize random samples from all component datasets in REPO_LIST.')
     parser.add_argument('--n_examples', default=9, type=int, help='Number of random samples to display.')
     return parser

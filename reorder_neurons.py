@@ -13,23 +13,20 @@ def reorder_neurons(spike_counts, method='cosine'):
     
     # Safety check for small arrays
     if spike_counts.shape[0] < 2:
+        print(f"Data row has too few neurons, returning the original array...")
         return spike_counts
 
-    try:
-        # Calculate distance
-        dists = pdist(spike_counts, metric=method)
-        # Handle NaN distances (common with silent neurons)
-        # 2.0 is the max distance for correlation (range -1 to 1)
-        dists = np.nan_to_num(dists, nan=2.0)
-        
-        # Cluster
-        linkage_matrix = linkage(dists, method='ward', optimal_ordering=True)
-        sorted_indices = leaves_list(linkage_matrix)
-        
-        return spike_counts[sorted_indices, :]
-    except Exception as e:
-        # Fallback if clustering fails
-        return spike_counts
+    # Calculate distance
+    dists = pdist(spike_counts, metric=method)
+    # Handle NaN distances (common with silent neurons)
+    # 2.0 is the max distance for correlation (range -1 to 1)
+    dists = np.nan_to_num(dists, nan=2.0)
+    
+    # Cluster
+    linkage_matrix = linkage(dists, method='ward', optimal_ordering=True)
+    sorted_indices = leaves_list(linkage_matrix)
+    
+    return spike_counts[sorted_indices, :]
 
 # 2. Define the processing wrapper for the map function
 def apply_reordering(example):
@@ -49,7 +46,7 @@ def main():
     # Configuration
     SOURCE_REPO = "eminorhan/neural-pile-primate"
     TARGET_REPO = "eminorhan/neural-pile-primate-reordered"
-    NUM_PROC = 72  # Adjust based on available CPU cores
+    NUM_PROC = 128  # Adjust based on available CPU cores
     
     print(f"Loading dataset from {SOURCE_REPO}...")
     dataset = load_dataset(SOURCE_REPO)

@@ -6,6 +6,7 @@ from typing import Dict, Tuple
 import os
 import re
 from tqdm import tqdm
+from huggingface_hub import HfApi
 
 def compute_similarity_batch(query_vectors: np.ndarray, reference_vectors: np.ndarray) -> np.ndarray:
     """
@@ -122,8 +123,10 @@ def assign_indices_and_save(
         "patch_size": patch_size,
         "k_limit": actual_k_limit
     }
+
     with open(output_path, 'wb') as f:
         pickle.dump(output_data, f)
+
     print("Save complete.")
     print(f"Dictionary size: {len(patch_index_map)} entries.")
     print(f"Metadata saved: Patch Size={patch_size}, K Limit={actual_k_limit}")
@@ -133,12 +136,32 @@ def load_index_dictionary(path: str) -> Dict[bytes, int]:
     with open(path, 'rb') as f:
         return pickle.load(f)
 
+def upload_to_hub(local_file: str, repo_id: str):
+    """
+    Uploads the saved .pkl file to the Hugging Face Hub using local credentials.
+    """
+    print(f"\n--- Uploading the tokenizer to Hugging Face Hub ---")
+    api = HfApi()
+    
+    try:
+        api.create_repo(repo_id=repo_id, exist_ok=True)
+        
+        api.upload_file(
+            path_or_fileobj=local_file,
+            path_in_repo=local_file, 
+            repo_id=repo_id
+        )
+        print(f"Successfully uploaded the tokenizer to: https://huggingface.co/datasets/{repo_id}")
+    except Exception as e:
+        print(f"Upload failed. Ensure you have 'write' permissions to the repo. Error: {e}")
+
 if __name__ == "__main__":
     
     parser = argparse.ArgumentParser(description="Embarrasingly simple tokenizer for neural pile motifs.")
-    parser.add_argument("--hf_repo_id", type=str, default="eminorhan/neural-pile-primate-1x15", help="Hugging Face repo ID for loading the motifs.")
-    parser.add_argument("--output_filename", type=str, default="tokenizer_primate_1x15_32k.pkl", help="Output file name where the motif index map will be saved.")
+    parser.add_argument("--hf_repo_id", type=str, default="eminorhan/neural-pile-primate-reordered-1x15", help="Hugging Face repo ID for loading the motifs.")
+    parser.add_argument("--output_filename", type=str, default="tokenizer_primate_reordered_1x15_32k.pkl", help="Output file name where the motif index map will be saved.")
     parser.add_argument("--k_limit", type=int, default=32_000-2, help="Max index to be used for encoding the motifs.")
+    parser.add_argument("--hf_repo_name", type=str, default="eminorhan/neural-pile-tokenizers", help="Target HF repo (e.g. 'username/my-tokenizer')")    
     args = parser.parse_args()
 
     # From argparse
@@ -160,7 +183,11 @@ if __name__ == "__main__":
         output_path=OUTPUT_FILENAME,
         dtype=PATCH_DTYPE
     )
-    
+
+    # Optional: upload tokenizer to HF Hub
+    if args.hf_repo_name:
+        upload_to_hub(OUTPUT_FILENAME, args.hf_repo_name)
+
     # --- VERIFICATION ---
     # Uncomment to test loading
     print("\nVerifying load...")
