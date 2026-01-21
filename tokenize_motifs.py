@@ -132,7 +132,9 @@ def assign_indices_and_save(
     print(f"Metadata saved: Patch Size={patch_size}, K Limit={actual_k_limit}")
 
 def load_index_dictionary(path: str) -> Dict[bytes, int]:
-    """Helper function to demonstrate how to load the saved dictionary."""
+    """
+    Helper function to demonstrate how to load the saved dictionary.
+    """
     with open(path, 'rb') as f:
         return pickle.load(f)
 
@@ -158,38 +160,26 @@ def upload_to_hub(local_file: str, repo_id: str):
 if __name__ == "__main__":
     
     parser = argparse.ArgumentParser(description="Embarrasingly simple tokenizer for neural pile motifs.")
-    parser.add_argument("--hf_repo_id", type=str, default="eminorhan/neural-pile-primate-reordered-1x15", help="Hugging Face repo ID for loading the motifs.")
+    parser.add_argument("--hf_input_repo", type=str, default="eminorhan/neural-pile-primate-reordered-1x15", help="Hugging Face repo ID to load the motifs from.")
     parser.add_argument("--output_filename", type=str, default="tokenizer_primate_reordered_1x15_32k.pkl", help="Output file name where the motif index map will be saved.")
-    parser.add_argument("--k_limit", type=int, default=32_000-2, help="Max index to be used for encoding the motifs.")
-    parser.add_argument("--hf_repo_name", type=str, default="eminorhan/neural-pile-tokenizers", help="Target HF repo (e.g. 'username/my-tokenizer')")    
+    parser.add_argument("--k_limit", type=int, default=32_000-2, help="Vocab size - 1 (reserving 1 token for SEP).")
+    parser.add_argument("--hf_output_repo", type=str, default="eminorhan/neural-pile-tokenizers", help="Target HF repo (e.g. 'username/my-tokenizer')")    
     args = parser.parse_args()
 
-    # From argparse
-    HF_REPO_ID = args.hf_repo_id
-    OUTPUT_FILENAME = args.output_filename
-    K_LIMIT = args.k_limit
-
-    # Other arguments
-    PATCH_DTYPE = np.uint8 
-
-    print("--- Patch Index Assigner ---")
-    print(f"Repo: {HF_REPO_ID}")
-    print(f"K Limit: {K_LIMIT}")
-    print("---")
+    print(f"Args: {args}")
     
     assign_indices_and_save(
-        repo_id=HF_REPO_ID,
-        k_limit=K_LIMIT,
-        output_path=OUTPUT_FILENAME,
-        dtype=PATCH_DTYPE
+        repo_id=args.hf_input_repo,
+        k_limit=args.k_limit,
+        output_path=args.output_filename,
+        dtype=np.uint8
     )
+    
+    # Upload tokenizer to HF Hub
+    if args.hf_output_repo:
+        upload_to_hub(args.output_filename, args.hf_output_repo)
 
-    # Optional: upload tokenizer to HF Hub
-    if args.hf_repo_name:
-        upload_to_hub(OUTPUT_FILENAME, args.hf_repo_name)
-
-    # --- VERIFICATION ---
-    # Uncomment to test loading
+    # Test loading
     print("\nVerifying load...")
-    loaded_map = load_index_dictionary(OUTPUT_FILENAME)
+    loaded_map = load_index_dictionary(args.output_filename)
     print(f"Successfully loaded map with {len(loaded_map)} keys.")
